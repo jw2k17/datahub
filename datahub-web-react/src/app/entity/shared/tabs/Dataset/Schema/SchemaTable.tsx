@@ -21,9 +21,11 @@ import { StyledTable } from '../../../components/styled/StyledTable';
 import { SchemaRow } from './components/SchemaRow';
 import { FkContext } from './utils/selectedFkContext';
 import useSchemaBlameRenderer from './utils/useSchemaBlameRenderer';
-import { ANTD_GRAY } from '../../../constants';
+import { ANTD_GRAY, SCHEMA_TABLE_MAX_COLUMN_WIDTH } from '../../../constants';
 import MenuColumn from './components/MenuColumn';
 import translateFieldPath from '../../../../dataset/profile/schema/utils/translateFieldPath';
+import { ResizableTitle } from './ResizableTitle';
+import { percentToPixelWidth } from '../../../utils';
 
 const TableContainer = styled.div`
     overflow: inherit;
@@ -114,7 +116,7 @@ export default function SchemaTable({
     });
 
     const fieldColumn = {
-        width: '22%',
+        width: percentToPixelWidth('22%'),
         title: 'Field',
         dataIndex: 'fieldPath',
         key: 'fieldPath',
@@ -126,7 +128,7 @@ export default function SchemaTable({
     };
 
     const descriptionColumn = {
-        width: '22%',
+        width: percentToPixelWidth('22%'),
         title: 'Description',
         dataIndex: 'description',
         key: 'description',
@@ -134,7 +136,7 @@ export default function SchemaTable({
     };
 
     const tagColumn = {
-        width: '13%',
+        width: percentToPixelWidth('13%'),
         title: 'Tags',
         dataIndex: 'globalTags',
         key: 'tag',
@@ -143,7 +145,7 @@ export default function SchemaTable({
     };
 
     const termColumn = {
-        width: '13%',
+        width: percentToPixelWidth('13%'),
         title: 'Glossary Terms',
         dataIndex: 'globalTags',
         key: 'tag',
@@ -152,7 +154,7 @@ export default function SchemaTable({
     };
 
     const blameColumn = {
-        width: '10%',
+        width: percentToPixelWidth('10%'),
         dataIndex: 'fieldPath',
         key: 'fieldPath',
         render(record: SchemaField) {
@@ -176,7 +178,7 @@ export default function SchemaTable({
     }
 
     const usageColumn = {
-        width: '10%',
+        width: percentToPixelWidth('10%'),
         title: 'Usage',
         dataIndex: 'fieldPath',
         key: 'usage',
@@ -185,7 +187,7 @@ export default function SchemaTable({
     };
 
     const menuColumn = {
-        width: '5%',
+        width: percentToPixelWidth('5%'),
         title: '',
         dataIndex: '',
         key: 'menu',
@@ -219,6 +221,31 @@ export default function SchemaTable({
 
     useMemo(() => setVT({ body: { row: SchemaRow } }), [setVT]);
 
+    const [columns, setColumns] = useState(allColumns);
+
+    const handleResize =
+        (index) =>
+        (e, { size }) => {
+            setColumns((prevColumns) => {
+                const nextColumns = [...prevColumns];
+                const newWidth = Math.min(size?.width, SCHEMA_TABLE_MAX_COLUMN_WIDTH);
+                nextColumns[index] = {
+                    ...nextColumns[index],
+                    width: newWidth,
+                };
+                return nextColumns;
+            });
+        };
+
+    const resizableColumns = columns.map((col, index) => ({
+        ...col,
+        onHeaderCell: (column) => ({
+            width: column.width,
+            onResize: handleResize(index),
+            column,
+        }),
+    }));
+
     return (
         <FkContext.Provider value={selectedFkFieldPath}>
             <TableContainer>
@@ -227,11 +254,16 @@ export default function SchemaTable({
                         rowClassName={(record) =>
                             record.fieldPath === selectedFkFieldPath?.fieldPath ? 'open-fk-row' : ''
                         }
-                        columns={allColumns}
+                        columns={resizableColumns}
                         dataSource={rows}
                         rowKey="fieldPath"
                         scroll={{ y: tableHeight }}
-                        components={VT}
+                        components={{
+                            header: {
+                                cell: ResizableTitle,
+                            },
+                            body: VT as any,
+                        }}
                         expandable={{
                             expandedRowKeys: [...Array.from(expandedRows)],
                             defaultExpandAllRows: false,
