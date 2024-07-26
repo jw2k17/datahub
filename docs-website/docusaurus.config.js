@@ -71,11 +71,23 @@ module.exports = {
       },
       items: [
         {
-          to: "docs/",
-          activeBasePath: "docs",
+          type: "dropdown",
           label: "Docs",
           position: "right",
+          items: [
+          {
+          type: "docSidebar",
+          sidebarId: "overviewSidebar",
+          label: "DataHub",
         },
+        {
+          type: "docSidebar",
+          sidebarId: "acrylSidebar",
+          label: "DataHub Cloud",
+        },
+          ]
+        },
+
         {
           to: "/learn",
           activeBasePath: "learn",
