@@ -254,6 +254,23 @@ public class LabelUtils {
         context, targetUrn.getEntityType(), targetUrn.toString(), orPrivilegeGroups);
   }
 
+  public static boolean isAuthorizedToAssociateTag(@Nonnull QueryContext context, Urn targetUrn) {
+
+    // Decide whether the current principal should be allowed to associate the tag
+    final DisjunctivePrivilegeGroup orPrivilegeGroups =
+        new DisjunctivePrivilegeGroup(
+            ImmutableList.of(
+                new ConjunctivePrivilegeGroup(
+                    ImmutableList.of(PoliciesConfig.ASSOCIATE_TAGS_PRIVILEGE.getType()))));
+
+    return AuthorizationUtils.isAuthorized(
+        context.getAuthorizer(),
+        context.getActorUrn(),
+        targetUrn.getEntityType(),
+        targetUrn.toString(),
+        orPrivilegeGroups);
+  }
+
   public static boolean isAuthorizedToUpdateTerms(
       @Nonnull QueryContext context, Urn targetUrn, String subResource) {
 
