@@ -322,7 +322,7 @@ class SupersetSource(StatefulIngestionSourceBase):
         return dataset_response.json()
 
     def get_datasource_urn_from_id(
-            self, dataset_response: dict, platform_instance: str
+        self, dataset_response: dict, platform_instance: str
     ) -> str:
         schema_name = dataset_response.get("result", {}).get("schema")
         table_name = dataset_response.get("result", {}).get("table_name")
@@ -355,7 +355,7 @@ class SupersetSource(StatefulIngestionSourceBase):
         raise ValueError("Could not construct dataset URN")
 
     def construct_dashboard_from_api_data(
-            self, dashboard_data: dict
+        self, dashboard_data: dict
     ) -> DashboardSnapshot:
         dashboard_urn = make_dashboard_urn(
             platform=self.platform,
@@ -564,8 +564,8 @@ class SupersetSource(StatefulIngestionSourceBase):
         return schema_fields
 
     def gen_schema_metadata(
-            self,
-            dataset_response: dict,
+        self,
+        dataset_response: dict,
     ) -> SchemaMetadata:
         dataset_response = dataset_response.get("result", {})
         column_data = dataset_response.get("columns", [])
@@ -645,7 +645,7 @@ class SupersetSource(StatefulIngestionSourceBase):
             return False
 
     def construct_dataset_from_dataset_data(
-            self, dataset_data: dict
+        self, dataset_data: dict
     ) -> DatasetSnapshot:
         dataset_response = self.get_dataset_info(dataset_data.get("id"))
         dataset = SupersetDataset(**dataset_response["result"])
