@@ -635,7 +635,7 @@ class SupersetSource(StatefulIngestionSourceBase):
         return GlossaryTermsClass(terms=glossary_term_urns, auditStamp=last_modified)
 
     def _is_certified_metric(self, response_result: dict) -> bool:
-        # We only sync in certified metrics for physical dataset
+        # We only want to ingest certified metrics for physical preset dataset
         metrics = response_result.get("metrics", {})
         extra = response_result.get("extra", {})
         kind = response_result.get("kind")
