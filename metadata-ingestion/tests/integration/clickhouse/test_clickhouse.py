@@ -3,6 +3,12 @@ from typing import List
 import pytest
 from freezegun import freeze_time
 
+from datahub.emitter.mcp import MetadataChangeProposalWrapper
+from datahub.ingestion.source.file import read_metadata_file
+from datahub.metadata._schema_classes import (
+    SubTypesClass,
+    ViewPropertiesClass,
+)
 from tests.test_helpers import mce_helpers
 from tests.test_helpers.click_helpers import run_datahub_cmd
 from tests.test_helpers.docker_helpers import wait_for_port
@@ -68,4 +74,50 @@ def test_clickhouse_ingest_uri_form(
             ignore_paths=ignore_paths,
             output_path=tmp_path / "clickhouse_mces_uri_form.json",
             golden_path=test_resources_dir / "clickhouse_mces_golden.json",
+        )
+
+
+def test_view_properties_aspect_present(pytestconfig):
+    """Verify that view definitions include the ViewProperties aspect with correct attributes."""
+    test_resources_dir = pytestconfig.rootpath / "tests/integration/clickhouse"
+    golden_file = test_resources_dir / "clickhouse_mces_golden.json"
+
+    mces = read_metadata_file(golden_file)
+
+    urn_to_aspects = {}
+    for mce in mces:
+        if isinstance(mce, MetadataChangeProposalWrapper):
+            urn_to_aspects.setdefault(mce.entityUrn, []).append(mce.aspect)
+
+    view_urns = [
+        urn
+        for urn, aspects in urn_to_aspects.items()
+        if any(
+            isinstance(aspect, SubTypesClass) and "View" in aspect.typeNames
+            for aspect in aspects
+        )
+    ]
+
+    assert view_urns, "No views found in the golden file"
+
+    for view_urn in view_urns:
+        view_properties = next(
+            (
+                aspect
+                for aspect in urn_to_aspects[view_urn]
+                if isinstance(aspect, ViewPropertiesClass)
+            ),
+            None,
+        )
+        assert view_properties, f"ViewProperties aspect missing for view {view_urn}"
+
+        # Validate ViewProperties attributes
+        assert view_properties.viewLogic is not None, (
+            f"viewLogic should not be empty for {view_urn}"
+        )
+        assert view_properties.viewLanguage == "SQL", (
+            f"viewLanguage should be SQL for {view_urn}"
+        )
+        assert isinstance(view_properties.materialized, bool), (
+            f"materialized should be boolean for {view_urn}"
         )
