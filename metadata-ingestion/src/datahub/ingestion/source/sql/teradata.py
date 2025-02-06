@@ -22,6 +22,7 @@ from sqlalchemy import create_engine, inspect
 from sqlalchemy.engine import Engine
 from sqlalchemy.engine.base import Connection
 from sqlalchemy.engine.reflection import Inspector
+from sqlalchemy.pool import QueuePool
 from sqlalchemy.sql.expression import text
 from teradatasqlalchemy.dialect import TeradataDialect
 from teradatasqlalchemy.options import configure
@@ -678,6 +679,14 @@ ORDER by DataBaseName, TableName;
             if self.config.stateful_ingestion:
                 self.config.stateful_ingestion.remove_stale_metadata = False
 
+    def _add_default_options(self, sql_config: SQLCommonConfig) -> None:
+        """Add Teradata-specific default options"""
+        super()._add_default_options(sql_config)
+        if sql_config.is_profiling_enabled():
+            # By default, Teradata uses SingletonThreadPool, which is not supported by sqlalchemy
+            # QueuePool used for parallel connections when profiling is enabled
+            sql_config.options.setdefault("poolclass", QueuePool)
+
     @classmethod
     def create(cls, config_dict, ctx):
         config = TeradataConfig.parse_obj(config_dict)
@@ -705,6 +714,7 @@ ORDER by DataBaseName, TableName;
         # This method can be overridden in the case that you want to dynamically
         # run on multiple databases.
         url = self.config.get_sql_alchemy_url()
+
         logger.debug(f"sql_alchemy_url={url}")
         engine = create_engine(url, **self.config.options)
         with engine.connect() as conn:
