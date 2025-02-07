@@ -335,7 +335,14 @@ class SnowflakeV2Source(
             role = roles[i]
             i = i + 1
             # for some roles, quoting is necessary. for example test-role
-            cur = conn.query(f'show grants to role "{role}"')
+            # cur = conn.query(f'show grants to role "{role}"')
+            # for some roles, some roles are already quoted
+            if role.startswith('"') and role.endswith('"'):
+                query_role = role  # just use it as is when role quoted to avoid double quotes issue
+            else:
+                query_role = f'"{role}"'  # otherwise, add quotes if missing
+            cur = conn.query(f'show grants to role {query_role}')
+            
             for row in cur:
                 privilege = SnowflakePrivilege(
                     privilege=row["privilege"],
