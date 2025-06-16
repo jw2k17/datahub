@@ -189,7 +189,7 @@ jobs:
       - name: Checkout # adding checkout step just to make trivy upload happy
         uses: acryldata/sane-checkout-action@v3
       - name: Download image
-        uses: ishworkh/container-image-artifact-download@v2.0.0
+        uses: ishworkh/container-image-artifact-download@v2.1.0
         if: ${{ needs.setup.outputs.publish != 'true' && needs.setup.outputs.pr-publish != 'true' }}
         with:
           image: ${{ env.DATAHUB_GMS_IMAGE }}:${{ needs.setup.outputs.unique_tag }}
@@ -260,7 +260,7 @@ jobs:
       - name: Checkout # adding checkout step just to make trivy upload happy
         uses: acryldata/sane-checkout-action@v3
       - name: Download image
-        uses: ishworkh/container-image-artifact-download@v2.0.0
+        uses: ishworkh/container-image-artifact-download@v2.1.0
         if: ${{ needs.setup.outputs.publish != 'true' && needs.setup.outputs.pr-publish != 'true' }}
         with:
           image: ${{ env.DATAHUB_MAE_CONSUMER_IMAGE }}:${{ needs.setup.outputs.unique_tag }}
@@ -331,7 +331,7 @@ jobs:
       - name: Checkout # adding checkout step just to make trivy upload happy
         uses: acryldata/sane-checkout-action@v3
       - name: Download image
-        uses: ishworkh/container-image-artifact-download@v2.0.0
+        uses: ishworkh/container-image-artifact-download@v2.1.0
         if: ${{ needs.setup.outputs.publish != 'true' && needs.setup.outputs.pr-publish != 'true' }}
         with:
           image: ${{ env.DATAHUB_MCE_CONSUMER_IMAGE }}:${{ needs.setup.outputs.unique_tag }}
@@ -402,7 +402,7 @@ jobs:
       - name: Checkout # adding checkout step just to make trivy upload happy
         uses: acryldata/sane-checkout-action@v3
       - name: Download image
-        uses: ishworkh/container-image-artifact-download@v2.0.0
+        uses: ishworkh/container-image-artifact-download@v2.1.0
         if: ${{ needs.setup.outputs.publish != 'true' && needs.setup.outputs.pr-publish != 'true' }}
         with:
           image: ${{ env.DATAHUB_UPGRADE_IMAGE }}:${{ needs.setup.outputs.unique_tag }}
@@ -473,7 +473,7 @@ jobs:
       - name: Checkout # adding checkout step just to make trivy upload happy
         uses: actions/checkout@v4
       - name: Download image
-        uses: ishworkh/container-image-artifact-download@v2.0.0
+        uses: ishworkh/container-image-artifact-download@v2.1.0
         if: ${{ needs.setup.outputs.publish != 'true' && needs.setup.outputs.pr-publish != 'true' }}
         with:
           image: ${{ env.DATAHUB_FRONTEND_IMAGE }}:${{ needs.setup.outputs.unique_tag }}
@@ -534,7 +534,7 @@ jobs:
       - name: Checkout # adding checkout step just to make trivy upload happy
         uses: acryldata/sane-checkout-action@v3
       - name: Download image
-        uses: ishworkh/container-image-artifact-download@v2.0.0
+        uses: ishworkh/container-image-artifact-download@v2.1.0
         if: ${{ needs.setup.outputs.publish != 'true' && needs.setup.outputs.pr-publish != 'true' }}
         with:
           image: ${{ env.DATAHUB_KAFKA_SETUP_IMAGE }}:${{ needs.setup.outputs.unique_tag }}
@@ -595,7 +595,7 @@ jobs:
       - name: Checkout # adding checkout step just to make trivy upload happy
         uses: acryldata/sane-checkout-action@v3
       - name: Download image
-        uses: ishworkh/container-image-artifact-download@v2.0.0
+        uses: ishworkh/container-image-artifact-download@v2.1.0
         if: ${{ needs.setup.outputs.publish != 'true' && needs.setup.outputs.pr-publish != 'true' }}
         with:
           image: ${{ env.DATAHUB_MYSQL_SETUP_IMAGE }}:${{ needs.setup.outputs.unique_tag }}
@@ -656,7 +656,7 @@ jobs:
       - name: Checkout # adding checkout step just to make trivy upload happy
         uses: acryldata/sane-checkout-action@v3
       - name: Download image
-        uses: ishworkh/container-image-artifact-download@v2.0.0
+        uses: ishworkh/container-image-artifact-download@v2.1.0
         if: ${{ needs.setup.outputs.publish != 'true' && needs.setup.outputs.pr-publish != 'true' }}
         with:
           image: ${{ env.DATAHUB_ELASTIC_SETUP_IMAGE }}:${{ needs.setup.outputs.unique_tag }}
@@ -728,7 +728,7 @@ jobs:
       - name: Check out the repo
         uses: acryldata/sane-checkout-action@v3
       - name: Download Base Image
-        uses: ishworkh/container-image-artifact-download@v2.0.0
+        uses: ishworkh/container-image-artifact-download@v2.1.0
         if: ${{ needs.setup.outputs.publish != 'true' && needs.setup.outputs.pr-publish != 'true' && needs.setup.outputs.ingestion_base_change == 'true' }}
         with:
           image: ${{ env.DATAHUB_INGESTION_BASE_IMAGE }}:${{ needs.setup.outputs.ingestion_base_change == 'true' && needs.setup.outputs.unique_tag || 'head' }}
@@ -776,7 +776,7 @@ jobs:
       - name: Check out the repo
         uses: acryldata/sane-checkout-action@v3
       - name: Download Base Image
-        uses: ishworkh/container-image-artifact-download@v2.0.0
+        uses: ishworkh/container-image-artifact-download@v2.1.0
         if: ${{ needs.setup.outputs.publish != 'true' && needs.setup.outputs.pr-publish != 'true' && needs.setup.outputs.ingestion_base_change == 'true' }}
         with:
           image: ${{ env.DATAHUB_INGESTION_BASE_IMAGE }}:${{ needs.setup.outputs.ingestion_base_change == 'true' && needs.setup.outputs.unique_tag || 'head' }}
@@ -837,7 +837,7 @@ jobs:
         if: ${{ needs.setup.outputs.ingestion_change == 'true' || needs.setup.outputs.publish == 'true' || needs.setup.outputs.pr-publish =='true' }}
         run: ./gradlew :metadata-ingestion:codegen
       - name: Download Base Image
-        uses: ishworkh/container-image-artifact-download@v2.0.0
+        uses: ishworkh/container-image-artifact-download@v2.1.0
         if: ${{ needs.setup.outputs.publish != 'true' && needs.setup.outputs.pr-publish != 'true' && needs.setup.outputs.ingestion_base_change == 'true' }}
         with:
           image: ${{ env.DATAHUB_INGESTION_BASE_IMAGE }}:${{ needs.setup.outputs.ingestion_base_change == 'true' && needs.setup.outputs.unique_slim_tag || 'head-slim' }}
@@ -885,7 +885,7 @@ jobs:
       - name: Checkout # adding checkout step just to make trivy upload happy
         uses: acryldata/sane-checkout-action@v3
       - name: Download image Slim Image
-        uses: ishworkh/container-image-artifact-download@v2.0.0
+        uses: ishworkh/container-image-artifact-download@v2.1.0
         if: ${{ needs.datahub_ingestion_slim_build.outputs.needs_artifact_download == 'true' }}
         with:
           image: ${{ env.DATAHUB_INGESTION_IMAGE }}:${{ needs.datahub_ingestion_slim_build.outputs.tag }}
@@ -939,7 +939,7 @@ jobs:
         if: ${{ needs.setup.outputs.ingestion_change == 'true' || needs.setup.outputs.publish == 'true' || needs.setup.outputs.pr-publish == 'true' }}
         run: ./gradlew :metadata-ingestion:codegen
       - name: Download Base Image
-        uses: ishworkh/container-image-artifact-download@v2.0.0
+        uses: ishworkh/container-image-artifact-download@v2.1.0
         if: ${{ needs.setup.outputs.publish != 'true' && needs.setup.outputs.pr-publish != 'true' && needs.setup.outputs.ingestion_base_change == 'true' }}
         with:
           image: ${{ env.DATAHUB_INGESTION_BASE_IMAGE }}:${{ needs.setup.outputs.ingestion_base_change == 'true' && needs.setup.outputs.unique_tag || 'head' }}
@@ -985,7 +985,7 @@ jobs:
       - name: Checkout # adding checkout step just to make trivy upload happy
         uses: acryldata/sane-checkout-action@v3
       - name: Download image Full Image
-        uses: ishworkh/container-image-artifact-download@v2.0.0
+        uses: ishworkh/container-image-artifact-download@v2.1.0
         if: ${{ needs.datahub_ingestion_full_build.outputs.needs_artifact_download == 'true' }}
         with:
           image: ${{ env.DATAHUB_INGESTION_IMAGE }}:${{ needs.datahub_ingestion_full_build.outputs.tag }}
@@ -1102,47 +1102,47 @@ jobs:
       - name: Disk Check
         run: df -h . && docker images
       - name: Download GMS image
-        uses: ishworkh/container-image-artifact-download@v2.0.0
+        uses: ishworkh/container-image-artifact-download@v2.1.0
         if: ${{ ( needs.setup.outputs.publish != 'true' && needs.setup.outputs.pr-publish != 'true' ) && needs.gms_build.result == 'success' }}
         with:
           image: ${{ env.DATAHUB_GMS_IMAGE }}:${{ needs.setup.outputs.unique_tag }}
       - name: Download Frontend image
-        uses: ishworkh/container-image-artifact-download@v2.0.0
+        uses: ishworkh/container-image-artifact-download@v2.1.0
         if: ${{ ( needs.setup.outputs.publish != 'true' && needs.setup.outputs.pr-publish != 'true' ) && needs.frontend_build.result == 'success' }}
         with:
           image: ${{ env.DATAHUB_FRONTEND_IMAGE }}:${{ needs.setup.outputs.unique_tag }}
       - name: Download Kafka Setup image
-        uses: ishworkh/container-image-artifact-download@v2.0.0
+        uses: ishworkh/container-image-artifact-download@v2.1.0
         if: ${{ ( needs.setup.outputs.publish != 'true' && needs.setup.outputs.pr-publish != 'true' ) && needs.kafka_setup_build.result == 'success' }}
         with:
           image: ${{ env.DATAHUB_KAFKA_SETUP_IMAGE }}:${{ needs.setup.outputs.unique_tag }}
       - name: Download Mysql Setup image
-        uses: ishworkh/container-image-artifact-download@v2.0.0
+        uses: ishworkh/container-image-artifact-download@v2.1.0
         if: ${{ ( needs.setup.outputs.publish != 'true' && needs.setup.outputs.pr-publish != 'true' ) && needs.mysql_setup_build.result == 'success' }}
         with:
           image: ${{ env.DATAHUB_MYSQL_SETUP_IMAGE }}:${{ needs.setup.outputs.unique_tag }}
       - name: Download Elastic Setup image
-        uses: ishworkh/container-image-artifact-download@v2.0.0
+        uses: ishworkh/container-image-artifact-download@v2.1.0
         if: ${{ ( needs.setup.outputs.publish != 'true' && needs.setup.outputs.pr-publish != 'true' ) && needs.elasticsearch_setup_build.result == 'success' }}
         with:
           image: ${{ env.DATAHUB_ELASTIC_SETUP_IMAGE }}:${{ needs.setup.outputs.unique_tag }}
       - name: Download MCE Consumer image
-        uses: ishworkh/container-image-artifact-download@v2.0.0
+        uses: ishworkh/container-image-artifact-download@v2.1.0
         if: ${{ ( needs.setup.outputs.publish != 'true' && needs.setup.outputs.pr-publish != 'true' ) && needs.mce_consumer_build.result == 'success' }}
         with:
           image: ${{ env.DATAHUB_MCE_CONSUMER_IMAGE }}:${{ needs.setup.outputs.unique_tag }}
       - name: Download MAE Consumer image
-        uses: ishworkh/container-image-artifact-download@v2.0.0
+        uses: ishworkh/container-image-artifact-download@v2.1.0
         if: ${{ ( needs.setup.outputs.publish != 'true' && needs.setup.outputs.pr-publish != 'true' ) && needs.mae_consumer_build.result == 'success' }}
         with:
           image: ${{ env.DATAHUB_MAE_CONSUMER_IMAGE }}:${{ needs.setup.outputs.unique_tag }}
       - name: Download upgrade image
-        uses: ishworkh/container-image-artifact-download@v2.0.0
+        uses: ishworkh/container-image-artifact-download@v2.1.0
         if: ${{ ( needs.setup.outputs.publish != 'true' && needs.setup.outputs.pr-publish != 'true' ) && needs.datahub_upgrade_build.result == 'success' }}
         with:
           image: ${{ env.DATAHUB_UPGRADE_IMAGE }}:${{ needs.setup.outputs.unique_tag }}
       - name: Download datahub-ingestion-slim image
-        uses: ishworkh/container-image-artifact-download@v2.0.0
+        uses: ishworkh/container-image-artifact-download@v2.1.0
         if: ${{ needs.datahub_ingestion_slim_build.outputs.needs_artifact_download == 'true' && needs.datahub_ingestion_slim_build.result == 'success' }}
         with:
           image: ${{ env.DATAHUB_INGESTION_IMAGE }}:${{ needs.datahub_ingestion_slim_build.outputs.tag }}
